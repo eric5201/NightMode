@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+android {
+	compileSdkVersion rootProject.ext.targetSdkVersion
+	buildToolsVersion rootProject.ext.buildToolsVersion
+
+	defaultConfig {
+		applicationId "com.eric.blackbulb"
+		minSdkVersion rootProject.ext.minSdkVersion
+		targetSdkVersion rootProject.ext.targetSdkVersion
+		versionCode rootProject.ext.versionCode
+		versionName rootProject.ext.versionName
+	}
+
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_7
+		targetCompatibility JavaVersion.VERSION_1_7
+	}
+
+	lintOptions {
+		checkReleaseBuilds false
+		// Or, if you prefer, you can continue to check for errors in release builds,
+		// but continue the build even when errors are found:
+		abortOnError false
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled false
+			shrinkResources false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+	}
+
+	signingConfigs {
+		debug {
+//			keyAlias 'czc'
+//			keyPassword 'Ericgood'
+//			storeFile file('E:\Android\czc_signature\\czc.jks')
+//			storePassword 'Ericgood'
+		}
+		release {
+			keyAlias 'czc'
+			keyPassword 'Ericgood'
+			storeFile file('E:\\Android\\czc_signature\\czc.jks')
+			storePassword 'Ericgood'
+		}
+	}
+}
+
+dependencies {
+	compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile 'org.cyanogenmod:platform.sdk:2.0'
+	compile 'moe.feng:AlipayZeroSdk:1.1'
+	compile 'moe.shizuku.fontprovider:api:8'
+	compile 'com.facebook.android:audience-network-sdk:4.+'
+	compile project(":libraries:timepicker")
+}
