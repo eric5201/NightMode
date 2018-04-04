@@ -16,13 +16,6 @@ a Material Design Android app which can prevent your eye from being hurt by scre
 一个能减少屏幕光线对眼睛造成伤害的 Material Design 风格 Android 应用程序。
 
 Open source with love~
-
-### Screenshots 截图
-
-(Screenshot is out of dated. You can download latest version and try it.)
-
-<a href="./art/1.png"><img src="./art/1.png" width="40%"/></a><a href="./art/2.png"><img src="./art/2.png" width="40%"/></a><a href="./art/3.png"><img src="./art/3.png" width="40%"/></a>
-
 ---
 
 ### Open Source License 开源协议
