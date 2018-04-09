@@ -63,19 +63,39 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/toggle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:importantForAccessibility="no"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_brightness_7_black_24dp"
-                android:tint="?attr/icon_tint" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_brightness_7_black_24dp"
+                    android:tint="?attr/icon_tint"
+                    android:visibility="gone" />
+
+                <Switch
+                    android:id="@+id/toggle_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:importantForAccessibility="no"
+                    android:switchMinWidth="48dp"
+                    android:thumb="@drawable/main_switch_selector"
+                    android:tint="?attr/icon_tint"
+                    android:track="@drawable/main_switch_bg_selector" />
+            </LinearLayout>
 
             <SeekBar
                 android:id="@+id/seek_bar"

@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
 
     // Views & States
     private ImageButton mToggle;
+    private Switch mSwitch;
     private SeekBar mSeekBar;
     private ExpandIconView mExpandIcon;
     private View mDivider, mMiniSchedulerBar;
@@ -157,9 +158,10 @@ public class MainActivity extends Activity {
 
         // Set up toggle
         mToggle = findViewById(R.id.toggle);
-        mToggle.setOnClickListener(new View.OnClickListener() {
+        mSwitch = findViewById(R.id.toggle_switch);
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isRunning) {
                     if (!Utility.canDrawOverlays(MainActivity.this)) {
                         Utility.requestOverlayPermission(
@@ -173,6 +175,22 @@ public class MainActivity extends Activity {
                 }
             }
         });
+//        mToggle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!isRunning) {
+//                    if (!Utility.canDrawOverlays(MainActivity.this)) {
+//                        Utility.requestOverlayPermission(
+//                                MainActivity.this, REQUEST_CODE_OVERLAY_PERMISSION);
+//                        return;
+//                    }
+//                    startMaskService();
+//                } else {
+//                    stopMaskService();
+//                    showNativeAd();
+//                }
+//            }
+//        });
 
         // Set up seekBar
         mSeekBar = findViewById(R.id.seek_bar);
@@ -528,6 +546,7 @@ public class MainActivity extends Activity {
             updateSchedulerRow();
             mToggle.setImageResource(isRunning ?
                     R.drawable.ic_brightness_2_black_24dp : R.drawable.ic_brightness_7_black_24dp);
+            mSwitch.setChecked(isRunning);
         }
     }
 
