@@ -22,7 +22,7 @@ public class ActionReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Settings settings = Settings.getInstance(context);
         Log.i(TAG, "received \"" + intent.getAction() + "\" action");
-        NativeAdManager.getInstance().showAd();
+        NativeAdManager.getInstance().showAd(intent.getAction());
         if (Constants.ACTION_UPDATE_STATUS.equals(intent.getAction())) {
             int action = intent.getIntExtra(Constants.Extra.ACTION, -1);
             int brightness = intent.getIntExtra(Constants.Extra.BRIGHTNESS, 50);

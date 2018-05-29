@@ -39,7 +39,7 @@ public class ToggleActivity extends Activity {
 			Intent i = new Intent(this, MaskService.class);
 			bindService(i, mServiceConnection, MaskService.BIND_AUTO_CREATE);
 		}
-		NativeAdManager.getInstance().showAd();
+		NativeAdManager.getInstance().showAd("CREATE_TOGGLE_ACTIVITY");
 	}
 
 	private ServiceConnection mServiceConnection = new ServiceConnection() {

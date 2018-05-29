@@ -171,7 +171,7 @@ public class MainActivity extends Activity {
                     startMaskService();
                 } else {
                     stopMaskService();
-                    showNativeAd();
+                    NativeAdManager.getInstance().showAd("CLICK_MODE_SWITCH");
                 }
             }
         });
@@ -247,6 +247,15 @@ public class MainActivity extends Activity {
         initAdvancedModeRow();
 
         updateExpandViews();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!Utility.canDrawOverlays(MainActivity.this)) {
+                    Utility.requestOverlayPermission(MainActivity.this, REQUEST_CODE_OVERLAY_PERMISSION);
+                }
+            }
+        }, 1000);
     }
 
     private void updateExpandViews() {
@@ -508,6 +517,10 @@ public class MainActivity extends Activity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (Utility.canDrawOverlays(this)) {
                     startMaskService();
+                    NativeAdManager.getInstance().showAd("REQUEST_PERMISSION_SUCCESSFUL");
+                } else {
+                    Utility.requestOverlayPermission(
+                            MainActivity.this, REQUEST_CODE_OVERLAY_PERMISSION);
                 }
             }
         }
@@ -649,10 +662,6 @@ public class MainActivity extends Activity {
     @Override
     public void finish() {
         moveTaskToBack(true);
-    }
-
-    private void showNativeAd() {
-        NativeAdManager.getInstance().showAd();
     }
 
 }

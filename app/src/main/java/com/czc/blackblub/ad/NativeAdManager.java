@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.czc.blackblub.util.Utility;
 import com.czc.blackblub.widget.MediaView;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdChoicesView;
@@ -36,7 +37,7 @@ public class NativeAdManager {
     private static NativeAdManager instance = Hold.hold;
     private LinkedList<NativeAd> adList = new LinkedList();
     private Handler handler = new Handler(Looper.getMainLooper());
-    private Context context;
+    private Context mContext;
     private int showCound = 0;
     private long showTime = 0;
 
@@ -49,18 +50,23 @@ public class NativeAdManager {
     }
 
     public void init(Context context) {
-        this.context = context;
+        this.mContext = context;
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                loadAd();
+                if (Utility.canDrawOverlays(mContext)) {
+                    showAd("INIT_AD_MANAGER");
+                } else {
+                    loadAd();
+                }
             }
         }, 500);
     }
 
 
-    public void showAd() {
+    public void showAd(String from) {
+        Log.d("eric", "[showAd] from is: " + from);
         showAd(false);
     }
 
@@ -73,11 +79,11 @@ public class NativeAdManager {
             showCound++;
         }
         Log.d("eric", "[showAd] -> showCound:" + showCound);
-        if (adList.size() > 0) {
+        if (adList.size() > 0 && showCound > 0) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    showCound--;
+                    showCound = 0;
                     showTime = currTime;
                     Log.d("eric", "[showAd] -> 222 showCound:" + showCound);
                     displayAdView(adList.pollFirst());
@@ -88,13 +94,17 @@ public class NativeAdManager {
                 }
             });
             return;
+        } else if (adList.size() <= 0) {
+            loadAd();
         }
-        loadAd();
     }
 
     private void loadAd() {
+        if (adList.size() >= 1) {
+            return;
+        }
         //174967429815219_174971403148155 / YOUR_PLACEMENT_ID
-        NativeAd nativeAd = new NativeAd(context, "174967429815219_174971403148155");
+        NativeAd nativeAd = new NativeAd(mContext, "174967429815219_174971403148155");
         nativeAd.setAdListener(getAdListener(nativeAd));
         // Request an ad
         nativeAd.loadAd(NativeAd.MediaCacheFlag.ALL);
@@ -123,14 +133,6 @@ public class NativeAdManager {
                     showAd(true);
                 }
 
-                if (adList.size() < 1) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadAd();
-                        }
-                    }, 100);
-                }
             }
 
             @Override
@@ -148,7 +150,7 @@ public class NativeAdManager {
     }
 
     private void displayAdView(NativeAd nativeAd) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
         LinearLayout adView = (LinearLayout) inflater.inflate(R.layout.native_ad_layout, null);
 
         // Create native UI using the ad metadata.
@@ -174,7 +176,7 @@ public class NativeAdManager {
 
         // Add the AdChoices icon
         LinearLayout adChoicesContainer = (LinearLayout) adView.findViewById(R.id.ad_choices_container);
-        AdChoicesView adChoicesView = new AdChoicesView(context, nativeAd, true);
+        AdChoicesView adChoicesView = new AdChoicesView(mContext, nativeAd, true);
         adChoicesContainer.addView(adChoicesView);
 
         // Register the Title and CTA button to listen for clicks.
@@ -183,7 +185,7 @@ public class NativeAdManager {
         clickableViews.add(nativeAdCallToAction);
         nativeAd.registerViewForInteraction(adView, clickableViews);
 
-        new NativeAdDialog(context).showAd(adView);
+        new NativeAdDialog(mContext).showAd(adView);
     }
 
     static final class Hold {
