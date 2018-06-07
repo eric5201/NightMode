@@ -194,7 +194,7 @@ public class MainActivity extends Activity {
 
         // Set up seekBar
         mSeekBar = findViewById(R.id.seek_bar);
-        setSeekBarProgress(mSettings.getBrightness(60) - 20);
+        setSeekBarProgress(mSettings.getBrightness(45) - 20);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int currentProgress = -1;
 

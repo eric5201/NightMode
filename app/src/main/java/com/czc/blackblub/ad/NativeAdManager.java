@@ -79,7 +79,7 @@ public class NativeAdManager {
         Log.d("eric", "[showAd] -> showCound:" + showCound);
         if (adList.size() > 0) {
             showCound = 0;
-            handler.post(showAdRunnable);
+            handler.postDelayed(showAdRunnable, 200);
             return;
         } else if (adList.size() <= 0) {
             if (!isRetry) {
