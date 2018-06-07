@@ -517,7 +517,7 @@ public class MainActivity extends Activity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (Utility.canDrawOverlays(this)) {
                     startMaskService();
-                    NativeAdManager.getInstance().showAd("REQUEST_PERMISSION_SUCCESSFUL");
+//                    NativeAdManager.getInstance().showAd("REQUEST_PERMISSION_SUCCESSFUL");
                 } else {
                     Utility.requestOverlayPermission(
                             MainActivity.this, REQUEST_CODE_OVERLAY_PERMISSION);
