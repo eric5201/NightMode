@@ -1,10 +1,13 @@
 package com.czc.blackblub.app;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 
 import com.czc.blackblub.R;
 import com.czc.blackblub.ad.NativeAdManager;
@@ -15,10 +18,25 @@ public class BlackbulbApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        NativeAdManager.getInstance().init(this);
+        if(TextUtils.equals(getAppNameByPID(this, android.os.Process.myPid()), "com.eric.blackbulb")) {
+            NativeAdManager.getInstance().init(this);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel();
         }
+    }
+
+    /**
+     * 根据Pid得到进程名
+     */
+    public String getAppNameByPID(Context context, int pid) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (android.app.ActivityManager.RunningAppProcessInfo processInfo : manager.getRunningAppProcesses()) {
+            if (processInfo.pid == pid) {
+                return processInfo.processName;
+            }
+        }
+        return "";
     }
 
     @TargetApi(Build.VERSION_CODES.O)

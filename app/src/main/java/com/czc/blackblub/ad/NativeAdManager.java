@@ -2,6 +2,7 @@ package com.czc.blackblub.ad;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.czc.blackblub.R;
 import com.czc.blackblub.util.Utility;
 import com.czc.blackblub.widget.MediaView;
 import com.facebook.ads.Ad;
@@ -24,8 +26,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.czc.blackblub.R;
-
 /**
  * $CONTENT
  *
@@ -35,11 +35,12 @@ import com.czc.blackblub.R;
 public class NativeAdManager {
 
     private static NativeAdManager instance = Hold.hold;
+    private SharedPreferences sp;
+    private final String SHOW_TIME = "show_time";
     private LinkedList<NativeAd> adList = new LinkedList();
     private Handler handler = new Handler(Looper.getMainLooper());
     private Context mContext;
     private int showCound = 0;
-    private long showTime = 0;
 
     public static NativeAdManager getInstance() {
         return instance;
@@ -51,6 +52,7 @@ public class NativeAdManager {
 
     public void init(Context context) {
         this.mContext = context;
+        sp = context.getSharedPreferences("native_ad", Context.MODE_PRIVATE);
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -71,33 +73,38 @@ public class NativeAdManager {
     }
 
     private void showAd(boolean isRetry) {
-        final long currTime = System.currentTimeMillis();
-        if ((currTime - showTime) <= 10000) {
+        if ((System.currentTimeMillis() - sp.getLong(SHOW_TIME, 0l)) <= 10000) {
             return;
-        }
-        if (!isRetry) {
-            showCound++;
         }
         Log.d("eric", "[showAd] -> showCound:" + showCound);
-        if (adList.size() > 0 && showCound > 0) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    showCound = 0;
-                    showTime = currTime;
-                    Log.d("eric", "[showAd] -> 222 showCound:" + showCound);
-                    displayAdView(adList.pollFirst());
-
-                    if (adList.size() < 1) {
-                        loadAd();
-                    }
-                }
-            });
+        if (adList.size() > 0) {
+            showCound = 0;
+            handler.post(showAdRunnable);
             return;
         } else if (adList.size() <= 0) {
+            if (!isRetry) {
+                showCound++;
+            }
             loadAd();
         }
     }
+
+    private Runnable showAdRunnable = new Runnable() {
+        @Override
+        public void run() {
+            showCound = 0;
+            if ((System.currentTimeMillis() - sp.getLong(SHOW_TIME, 0l)) <= 10000) {
+                return;
+            }
+            sp.edit().putLong(SHOW_TIME, System.currentTimeMillis()).apply();
+            Log.d("eric", "[showAd] -> show time:" + sp.getLong(SHOW_TIME, 0l));
+            displayAdView(adList.pollFirst());
+
+            if (adList.size() < 1) {
+                loadAd();
+            }
+        }
+    };
 
     private void loadAd() {
         if (adList.size() >= 1) {
@@ -117,6 +124,9 @@ public class NativeAdManager {
             public void onError(Ad ad, AdError error) {
                 Log.d("eric", "[onError]");
                 // Ad error callback
+                if (adList.size() < 1) {
+                    loadAd();
+                }
             }
 
             @Override
@@ -130,6 +140,7 @@ public class NativeAdManager {
                 Log.d("eric", "[onAdLoaded] -> showCound:" + showCound);
                 adList.add(nativeAd);
                 if (showCound > 0) {
+                    showCound = 0;
                     showAd(true);
                 }
 

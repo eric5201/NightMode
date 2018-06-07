@@ -3,8 +3,10 @@ package com.czc.blackblub.ad;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -26,7 +28,6 @@ public class NativeAdDialog extends Dialog {
 
     public NativeAdDialog(@NonNull Context context) {
         super(context, R.style.nativeAdDialog);
-
         setContentView(R.layout.native_dialog_layout);
         getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
