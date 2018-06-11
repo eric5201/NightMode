@@ -115,7 +115,7 @@ public class Settings {
     }
 
     public int getYellowFilterAlpha() {
-	    return getYellowFilterAlpha(85);
+	    return getYellowFilterAlpha(100);
     }
 
     public int getYellowFilterAlpha(int defValue) {

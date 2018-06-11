@@ -26,7 +26,7 @@ public class ActionReceiver extends BroadcastReceiver {
         if (Constants.ACTION_UPDATE_STATUS.equals(intent.getAction())) {
             int action = intent.getIntExtra(Constants.Extra.ACTION, -1);
             int brightness = intent.getIntExtra(Constants.Extra.BRIGHTNESS, 25);
-            int yellowFilterAlpha = intent.getIntExtra(Constants.Extra.YELLOW_FILTER_ALPHA, 85);
+            int yellowFilterAlpha = intent.getIntExtra(Constants.Extra.YELLOW_FILTER_ALPHA, 100);
 
             Log.i(TAG, "handle \"" + action + "\" action");
             switch (action) {

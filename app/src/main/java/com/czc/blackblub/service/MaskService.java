@@ -50,9 +50,9 @@ public class MaskService extends Service {
     private boolean isShowing = false;
 
     // Options
-    private int mBrightness = 50;
+    private int mBrightness = 25;
     private int mAdvancedMode = Constants.AdvancedMode.NONE;
-    private int mYellowFilterAlpha = 0;
+    private int mYellowFilterAlpha = 100;
 
     // Constants
     private static final int ANIMATE_DURATION_MILES = 250;
@@ -268,7 +268,7 @@ public class MaskService extends Service {
             if (mYellowFilterAlpha > 0) {
                 Log.i(TAG, "Alpha: " + mYellowFilterAlpha);
                 float ratio = ((float) mYellowFilterAlpha) / 100F;
-                int blend = ColorUtil.blendColors(0xFFFFDDAA, Color.TRANSPARENT, ratio);
+                int blend = ColorUtil.blendColors(0xFFFAF9DE, Color.TRANSPARENT, ratio);
                 blend = ColorUtil.blendColors(Color.RED, blend, ratio / 3F);
                 color = ColorUtil.blendColors(blend, color, ratio / 3F);
             }
