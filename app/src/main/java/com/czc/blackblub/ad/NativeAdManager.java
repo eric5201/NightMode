@@ -57,11 +57,11 @@ public class NativeAdManager {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (Utility.canDrawOverlays(mContext)) {
-                    showAd("INIT_AD_MANAGER");
-                } else {
+//                if (Utility.canDrawOverlays(mContext)) {
+//                    showAd("INIT_AD_MANAGER");
+//                } else {
                     loadAd();
-                }
+//                }
             }
         }, 500);
     }

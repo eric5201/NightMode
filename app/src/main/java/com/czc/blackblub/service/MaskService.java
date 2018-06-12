@@ -268,9 +268,11 @@ public class MaskService extends Service {
             if (mYellowFilterAlpha > 0) {
                 Log.i(TAG, "Alpha: " + mYellowFilterAlpha);
                 float ratio = ((float) mYellowFilterAlpha) / 100F;
-                int blend = ColorUtil.blendColors(0xFFFAF9DE, Color.TRANSPARENT, ratio);
+                int blend = ColorUtil.blendColors(0xFFCB6D17, Color.TRANSPARENT, ratio);
                 blend = ColorUtil.blendColors(Color.RED, blend, ratio / 3F);
                 color = ColorUtil.blendColors(blend, color, ratio / 3F);
+
+                color = ColorUtil.blendColors(0xFFCB6D17, Color.TRANSPARENT, ratio/3F);
             }
             mLayout.setBackgroundColor(color);
         }
