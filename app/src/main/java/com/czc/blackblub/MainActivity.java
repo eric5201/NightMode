@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +34,8 @@ import com.czc.blackblub.app.Constants;
 import com.czc.blackblub.receiver.ActionReceiver;
 import com.czc.blackblub.ad.NativeAdManager;
 import com.czc.blackblub.ui.SchedulerDialog;
+import com.czc.blackblub.util.SharePreUtil;
+import com.czc.blackblub.util.StatusBarUtil;
 import com.czc.blackblub.util.Utility;
 import com.github.zagum.expandicon.ExpandIconView;
 
@@ -63,12 +66,16 @@ public class MainActivity extends Activity {
     private View mYellowFilterRow;
     private SeekBar mYellowFilterSeekBar;
 
+    private FrameLayout adContinor;
+
     private AlertDialog mFirstRunDialog;
 
-    private static boolean isExpand = false, hasDismissFirstRunDialog = false;
+    private static boolean isExpand = true, hasDismissFirstRunDialog = false;
 
     // Service states
     private boolean isRunning = false;
+
+    private boolean isActVisible = false;
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -99,13 +106,16 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         mSettings = Settings.getInstance(this);
 
-        // Apply theme and transparent system ui
-        Utility.applyTransparentSystemUI(this);
-        if (mSettings.isDarkTheme()) {
-            setTheme(R.style.AppTheme_Dark);
-        }
+//        // Apply theme and transparent system ui
+//        Utility.applyTransparentSystemUI(this);
+//        if (mSettings.isDarkTheme()) {
+//            setTheme(R.style.AppTheme_Dark);
+//        }
+        StatusBarUtil.setStatusBar(this, R.color.color_val_FF212326);
+        SharePreUtil.saveBootTag();
 
         // Apply Noto Sans CJK Full font from FontProvider API
         Utility.applyNotoSansCJK(this);
@@ -146,15 +156,15 @@ public class MainActivity extends Activity {
 //
 //        });
 
-        // Set up cardView's top padding and system ui visibility
-        LinearLayout cardView = findViewById(R.id.card_view);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !mSettings.isDarkTheme()) {
-            // PS: When Blackbulb runs on pre-23 API, it will be hard to see status bar icons
-            //     because of light background. I don't want to fix it. User experience requires
-            //     users to keep system version not out-of-date.
-            cardView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-        cardView.setPadding(0, Utility.getStatusBarHeight(this), 0, 0);
+//        // Set up cardView's top padding and system ui visibility
+//        LinearLayout cardView = findViewById(R.id.card_view);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !mSettings.isDarkTheme()) {
+//            // PS: When Blackbulb runs on pre-23 API, it will be hard to see status bar icons
+//            //     because of light background. I don't want to fix it. User experience requires
+//            //     users to keep system version not out-of-date.
+//            cardView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        }
+//        cardView.setPadding(0, Utility.getStatusBarHeight(this), 0, 0);
 
         // Set up toggle
         mToggle = findViewById(R.id.toggle);
@@ -256,6 +266,20 @@ public class MainActivity extends Activity {
                 }
             }
         }, 1000);
+
+        adContinor = findViewById(R.id.ad_card_layout);
+        adContinor.setVisibility(View.GONE);
+        NativeAdManager.getInstance().setOnInflatedAdListener(new NativeAdManager.OnInflatedAdListener() {
+            @Override
+            public boolean onInflatedAd(View adView) {
+                if (isActVisible) {
+                    adContinor.addView(adView);
+                    adContinor.setVisibility(View.VISIBLE);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void updateExpandViews() {
@@ -488,6 +512,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        isActVisible = true;
         if (mReceiver == null) {
             mReceiver = new MessageReceiver();
         }
@@ -501,6 +526,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        isActVisible = false;
+        adContinor.setVisibility(View.GONE);
+        adContinor.removeAllViews();
         if (mReceiver != null) {
             try {
                 unregisterReceiver(mReceiver);

@@ -26,4 +26,7 @@
 	<color name="color_val_20_000000">#33000000</color>
 	<color name="color_val_40_000000">#66000000</color>
 
+	<color name="color_val_FF212326">#FF212326</color>
+	<color name="color_val_FFFFFFFF">#FFFFFFFF</color>
+
 </resources>

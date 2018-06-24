@@ -19,8 +19,10 @@ import com.czc.blackblub.widget.MediaView;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdChoicesView;
 import com.facebook.ads.AdError;
+import com.facebook.ads.AdIconView;
 import com.facebook.ads.AdListener;
 import com.facebook.ads.NativeAd;
+import com.facebook.ads.NativeAdListener;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -41,6 +43,7 @@ public class NativeAdManager {
     private Handler handler = new Handler(Looper.getMainLooper());
     private Context mContext;
     private int showCound = 0;
+    private OnInflatedAdListener inflatedAdListener;
 
     public static NativeAdManager getInstance() {
         return instance;
@@ -60,10 +63,14 @@ public class NativeAdManager {
 //                if (Utility.canDrawOverlays(mContext)) {
 //                    showAd("INIT_AD_MANAGER");
 //                } else {
-                    loadAd();
+                loadAd();
 //                }
             }
         }, 500);
+    }
+
+    public void setOnInflatedAdListener(OnInflatedAdListener listener) {
+        this.inflatedAdListener = listener;
     }
 
 
@@ -98,7 +105,7 @@ public class NativeAdManager {
             }
             sp.edit().putLong(SHOW_TIME, System.currentTimeMillis()).apply();
             Log.d("eric", "[showAd] -> show time:" + sp.getLong(SHOW_TIME, 0l));
-            displayAdView(adList.pollFirst());
+            inflateAd(adList.pollFirst());
 
             if (adList.size() < 1) {
                 loadAd();
@@ -117,8 +124,13 @@ public class NativeAdManager {
         nativeAd.loadAd(NativeAd.MediaCacheFlag.ALL);
     }
 
-    private AdListener getAdListener(final NativeAd nativeAd) {
-        return new AdListener() {
+    private NativeAdListener getAdListener(final NativeAd nativeAd) {
+        return new NativeAdListener() {
+
+            @Override
+            public void onMediaDownloaded(Ad ad) {
+                Log.e("eric", "[onMediaDownloaded] -> Native ad finished downloading all assets.");
+            }
 
             @Override
             public void onError(Ad ad, AdError error) {
@@ -160,43 +172,52 @@ public class NativeAdManager {
         };
     }
 
-    private void displayAdView(NativeAd nativeAd) {
+    private void inflateAd(NativeAd nativeAd) {
+        // Add the Ad view into the ad container.
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        LinearLayout adView = (LinearLayout) inflater.inflate(R.layout.native_ad_layout, null);
-
-        // Create native UI using the ad metadata.
-        ImageView nativeAdIcon = (ImageView) adView.findViewById(R.id.native_ad_icon);
-        TextView nativeAdTitle = (TextView) adView.findViewById(R.id.native_ad_title);
-        MediaView nativeAdMedia = (MediaView) adView.findViewById(R.id.native_ad_media_view);
-        TextView nativeAdSocialContext = (TextView) adView.findViewById(R.id.native_ad_social_context);
-        TextView nativeAdBody = (TextView) adView.findViewById(R.id.native_ad_body);
-        Button nativeAdCallToAction = (Button) adView.findViewById(R.id.native_ad_call_to_action);
-
-        // Set the Text.
-        nativeAdTitle.setText(nativeAd.getAdTitle());
-        nativeAdSocialContext.setText(nativeAd.getAdSocialContext());
-        nativeAdBody.setText(nativeAd.getAdBody());
-        nativeAdCallToAction.setText(nativeAd.getAdCallToAction());
-
-        // Download and display the ad icon.
-        NativeAd.Image adIcon = nativeAd.getAdIcon();
-        NativeAd.downloadAndDisplayImage(adIcon, nativeAdIcon);
-
-        // Download and display the cover image.
-        nativeAdMedia.setNativeAd(nativeAd);
+        LinearLayout adView = (LinearLayout) inflater.inflate(R.layout.native_ad_4_99_layout, null);
 
         // Add the AdChoices icon
-        LinearLayout adChoicesContainer = (LinearLayout) adView.findViewById(R.id.ad_choices_container);
+        LinearLayout adChoicesContainer = adView.findViewById(R.id.ad_choices_container);
         AdChoicesView adChoicesView = new AdChoicesView(mContext, nativeAd, true);
-        adChoicesContainer.addView(adChoicesView);
+        adChoicesContainer.addView(adChoicesView, 0);
 
-        // Register the Title and CTA button to listen for clicks.
+        // Create native UI using the ad metadata.
+        AdIconView nativeAdIcon = adView.findViewById(R.id.native_ad_icon);
+        TextView nativeAdTitle = adView.findViewById(R.id.native_ad_title);
+        MediaView nativeAdMedia = adView.findViewById(R.id.native_ad_media);
+        TextView nativeAdSocialContext = adView.findViewById(R.id.native_ad_social_context);
+        TextView nativeAdBody = adView.findViewById(R.id.native_ad_body);
+        TextView sponsoredLabel = adView.findViewById(R.id.native_ad_sponsored_label);
+        Button nativeAdCallToAction = adView.findViewById(R.id.native_ad_call_to_action);
+
+        // Set the Text.
+        nativeAdTitle.setText(nativeAd.getAdvertiserName());
+        nativeAdBody.setText(nativeAd.getAdBodyText());
+        nativeAdSocialContext.setText(nativeAd.getAdSocialContext());
+        nativeAdCallToAction.setVisibility(nativeAd.hasCallToAction() ? View.VISIBLE : View.INVISIBLE);
+        nativeAdCallToAction.setText(nativeAd.getAdCallToAction());
+        sponsoredLabel.setText(nativeAd.getSponsoredTranslation());
+
+        // Create a list of clickable views
         List<View> clickableViews = new ArrayList<>();
         clickableViews.add(nativeAdTitle);
         clickableViews.add(nativeAdCallToAction);
-        nativeAd.registerViewForInteraction(adView, clickableViews);
 
-        new NativeAdDialog(mContext).showAd(adView);
+        // Register the Title and CTA button to listen for clicks.
+        nativeAd.registerViewForInteraction(
+                adView,
+                nativeAdMedia,
+                nativeAdIcon,
+                clickableViews);
+
+        if (null == inflatedAdListener || !inflatedAdListener.onInflatedAd(adView)) {
+            new NativeAdDialog(mContext).showAd(adView);
+        }
+    }
+
+    public interface OnInflatedAdListener {
+        boolean onInflatedAd(View adView);
     }
 
     static final class Hold {
