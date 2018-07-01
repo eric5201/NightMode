@@ -11,8 +11,6 @@ import com.czc.blackblub.util.SharePreUtil;
 import com.czc.blackblub.util.StatusBarUtil;
 
 public class LauncherAdActivity extends Activity implements View.OnClickListener {
-    protected boolean useThemestatusBarColor = false;//是否使用特殊的标题栏背景颜色，android5.0以上可以设置状态栏背景色，如果不使用则使用透明色值
-    protected boolean useStatusBarColor = true;//是否使用状态栏文字和图标为暗色，如果状态栏采用了白色系，则需要使状态栏和图标为暗色，android6.0以上可以设置
 
     private View adView;
     private View closeView;

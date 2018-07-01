@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="#7F4E5560"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:paddingBottom="16dp"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
@@ -18,12 +18,23 @@
         android:layout_marginEnd="8dp"
         android:importantForAccessibility="no"
         android:src="@drawable/ic_wb_incandescent_black_24dp"
-        android:tint="?attr/icon_tint" />
+        android:tint="?attr/icon_tint"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="滤蓝光"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/color_val_FFFFFFFF"
+        android:textSize="12sp" />
 
     <SeekBar
         android:id="@+id/yellow_filter_seek_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:max="100"
         android:progress="0" />

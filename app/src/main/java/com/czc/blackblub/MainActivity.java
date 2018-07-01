@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
     // Views & States
     private ImageButton mToggle;
     private Switch mSwitch;
+    private ImageView mToggleIv;
     private SeekBar mSeekBar;
     private ExpandIconView mExpandIcon;
     private View mDivider, mMiniSchedulerBar;
@@ -76,6 +77,8 @@ public class MainActivity extends Activity {
     private boolean isRunning = false;
 
     private boolean isActVisible = false;
+
+    private long clickTime = 0;
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -169,9 +172,32 @@ public class MainActivity extends Activity {
         // Set up toggle
         mToggle = findViewById(R.id.toggle);
         mSwitch = findViewById(R.id.toggle_switch);
-        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (!isRunning) {
+//                    if (!Utility.canDrawOverlays(MainActivity.this)) {
+//                        Utility.requestOverlayPermission(
+//                                MainActivity.this, REQUEST_CODE_OVERLAY_PERMISSION);
+//                        return;
+//                    }
+//                    startMaskService();
+//                } else {
+//                    stopMaskService();
+//                    NativeAdManager.getInstance().showAd("CLICK_MODE_SWITCH");
+//                }
+//            }
+//        });
+
+        mToggleIv = findViewById(R.id.toggle_iv);
+        mToggleIv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
+                if (System.currentTimeMillis() - clickTime <= 500) {
+                    return;
+                }
+                Log.e("eric", "================>isRunning："+isRunning);
+                clickTime = System.currentTimeMillis();
                 if (!isRunning) {
                     if (!Utility.canDrawOverlays(MainActivity.this)) {
                         Utility.requestOverlayPermission(
@@ -588,6 +614,10 @@ public class MainActivity extends Activity {
             mToggle.setImageResource(isRunning ?
                     R.drawable.ic_brightness_2_black_24dp : R.drawable.ic_brightness_7_black_24dp);
             mSwitch.setChecked(isRunning);
+
+
+            mToggleIv.setImageResource(R.mipmap.ic_launcher);
+            mToggleIv.setTag(isRunning);
         }
     }
 

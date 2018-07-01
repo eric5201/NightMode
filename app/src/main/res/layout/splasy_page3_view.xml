@@ -10,13 +10,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/splash_bg" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="130dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/splash_one" />
-
     <TextView
         android:id="@+id/title_tv"
         android:layout_width="match_parent"
@@ -24,20 +17,31 @@
         android:layout_marginLeft="38dp"
         android:layout_marginRight="38dp"
         android:layout_marginTop="90dp"
-        android:text="什么是蓝光?"
+        android:text="我们的作用"
         android:textColor="@color/color_val_FFFFFFFF"
         android:textSize="24dp" />
 
     <TextView
+        android:id="@+id/description_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_tv"
         android:layout_marginLeft="38dp"
         android:layout_marginRight="38dp"
         android:layout_marginTop="15dp"
-        android:text="蓝光位于可见光谱上，它波长较短，具有较高的能量。"
+        android:text="蓝光护目可为您的眼睛提供持续性的保护，可减小蓝光对您眼睛造成伤害，并保持屏幕原有的清晰度和色彩。"
         android:textColor="@color/color_val_FFFFFFFF"
         android:textSize="16dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/description_tv"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="53dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/splash_three" />
 
     <TextView
         android:id="@+id/click_view"
@@ -49,7 +53,7 @@
         android:layout_marginBottom="64dp"
         android:background="@drawable/splash_bt_bg"
         android:gravity="center"
-        android:text="下一步"
+        android:text="开启"
         android:textColor="@color/color_val_FFFFFFFF"
         android:textSize="24sp" />
 

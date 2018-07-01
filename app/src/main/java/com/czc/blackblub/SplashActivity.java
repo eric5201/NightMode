@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.czc.blackblub.ui.splash.SplashPage2View;
+import com.czc.blackblub.ui.splash.SplashPage3View;
 import com.czc.blackblub.ui.splash.SplashPageView;
 import com.czc.blackblub.util.SharePreUtil;
 import com.czc.blackblub.util.StatusBarUtil;
@@ -21,8 +23,8 @@ import java.util.List;
 public class SplashActivity extends Activity implements View.OnClickListener {
 
     private ViewPager viewPager;
-    private List<SplashPageView> views = new ArrayList<>();
-    private Integer[] images = new Integer[]{R.drawable.page1, R.drawable.page2, R.drawable.page3};
+    private List<View> views = new ArrayList<>();
+//    private Integer[] images = new Integer[]{R.drawable.splash_one, R.drawable.splash_two, R.drawable.splash_three};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,12 +41,18 @@ public class SplashActivity extends Activity implements View.OnClickListener {
     }
 
     void initViewPager() {
-        for (Integer res : images) {
-            SplashPageView itemView = new SplashPageView(this);
-            itemView.setSplashBg(res);
-            itemView.setSplashClick(this);
-            views.add(itemView);
-        }
+
+        SplashPageView itemView = new SplashPageView(this);
+        itemView.setSplashClick(this);
+        views.add(itemView);
+
+        SplashPage2View itemView2 = new SplashPage2View(this);
+        itemView2.setSplashClick(this);
+        views.add(itemView2);
+
+        SplashPage3View itemView3 = new SplashPage3View(this);
+        itemView3.setSplashClick(this);
+        views.add(itemView3);
 
         viewPager.setAdapter(new SplashPagerAdapter());
         viewPager.setOffscreenPageLimit(views.size());

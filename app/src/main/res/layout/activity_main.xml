@@ -52,6 +52,7 @@
                     android:textSize="16sp" />
 
                 <ImageView
+                    android:id="@+id/toggle_iv"
                     android:layout_width="82dp"
                     android:layout_height="82dp"
                     android:layout_gravity="center"
@@ -81,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
-                    android:text="@string/app_name"
+                    android:text="透明度"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/color_val_FFFFFFFF"
                     android:textSize="12sp" />
@@ -139,7 +140,8 @@
                         android:switchMinWidth="48dp"
                         android:thumb="@drawable/main_switch_selector"
                         android:tint="?attr/icon_tint"
-                        android:track="@drawable/main_switch_bg_selector" />
+                        android:track="@drawable/main_switch_bg_selector"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <SeekBar
@@ -212,7 +214,7 @@
                 android:id="@+id/divider_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#97AFAFAF"
+                android:background="#7F4E5560"
                 android:visibility="gone"
                 tools:visibility="gone" />
 
