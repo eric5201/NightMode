@@ -65,4 +65,8 @@
 
 	<string name="native_dialog_ad_exit">关闭</string>
 
+	<string name="blu_ray_eye_protection">蓝光护目</string>
+	<string name="main_goggles_tab">护目镜</string>
+	<string name="mian_alpha_tab">透明度</string>
+	<string name="main_blu_ray_filter">滤蓝光</string>
 </resources>

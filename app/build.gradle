@@ -10,6 +10,7 @@ android {
 		targetSdkVersion rootProject.ext.targetSdkVersion
 		versionCode rootProject.ext.versionCode
 		versionName rootProject.ext.versionName
+		multiDexEnabled true
 	}
 
 	compileOptions {
@@ -22,6 +23,10 @@ android {
 		// Or, if you prefer, you can continue to check for errors in release builds,
 		// but continue the build even when errors are found:
 		abortOnError false
+	}
+
+	dexOptions {
+		javaMaxHeapSize "4g"
 	}
 
 	buildTypes {
@@ -56,6 +61,7 @@ android {
 
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile 'com.android.support:multidex:1.0.0'
 	compile 'org.cyanogenmod:platform.sdk:2.0'
 	compile 'moe.feng:AlipayZeroSdk:1.1'
 	compile 'moe.shizuku.fontprovider:api:8'

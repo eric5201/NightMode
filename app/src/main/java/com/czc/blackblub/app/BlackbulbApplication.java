@@ -7,12 +7,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.czc.blackblub.R;
 import com.czc.blackblub.ad.NativeAdManager;
 
-public class BlackbulbApplication extends Application {
+public class BlackbulbApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {

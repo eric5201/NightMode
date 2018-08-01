@@ -24,10 +24,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="滤蓝光"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/color_val_FFFFFFFF"
-        android:textSize="12sp" />
+        android:text="@string/main_blu_ray_filter"
+        android:textAppearance="@android:style/TextAppearance.Material.Body2"
+        android:textColor="@color/color_val_FFFFFFFF" />
 
     <SeekBar
         android:id="@+id/yellow_filter_seek_bar"

@@ -28,6 +28,8 @@
             android:launchMode="singleInstance"
             android:stateNotNeeded="true">
             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
             </intent-filter>
 
@@ -42,10 +44,6 @@
             android:finishOnTaskLaunch="true"
             android:launchMode="singleInstance"
             android:stateNotNeeded="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity

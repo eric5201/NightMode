@@ -74,4 +74,8 @@
 
 	<string name="native_dialog_ad_exit">Exit</string>
 
+	<string name="blu_ray_eye_protection">Blu-ray eye protection</string>
+	<string name="main_goggles_tab">Goggles switch</string>
+	<string name="mian_alpha_tab">Alpha</string>
+	<string name="main_blu_ray_filter">Blu-ray filter</string>
 </resources>

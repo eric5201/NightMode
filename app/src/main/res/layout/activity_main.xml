@@ -15,9 +15,9 @@
         android:layout_height="48dp"
         android:gravity="center_vertical"
         android:paddingLeft="16dp"
-        android:text="蓝光护目"
-        android:textColor="@color/color_val_FFFFFFFF"
-        android:textSize="18sp" />
+        android:text="@string/blu_ray_eye_protection"
+        android:textAppearance="@android:style/TextAppearance.Material.Menu"
+        android:textColor="@color/color_val_FFFFFFFF" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -47,9 +47,9 @@
                     android:id="@+id/power_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="护目镜"
-                    android:textColor="@color/color_val_FFFFFFFF"
-                    android:textSize="16sp" />
+                    android:text="@string/main_goggles_tab"
+                    android:textAppearance="@android:style/TextAppearance.Material.Body2"
+                    android:textColor="@color/color_val_FFFFFFFF" />
 
                 <ImageView
                     android:id="@+id/toggle_iv"
@@ -82,10 +82,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
-                    android:text="透明度"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/color_val_FFFFFFFF"
-                    android:textSize="12sp" />
+                    android:text="@string/mian_alpha_tab"
+                    android:textAppearance="@android:style/TextAppearance.Material.Body2"
+                    android:textColor="@color/color_val_FFFFFFFF" />
 
                 <ImageButton
                     android:id="@+id/btn_about"
